@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:4.4.5
+    container_name: mongo_ecom
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_USERNAME: ecom
+      MONGO_INITDB_PASSWORD: secret
+      MONGO_INITDB_DATABASE: ecom_ts
+    volumes:
+      - mongo-data-ecom:/var/lib/mongodb/data:rw
+      - ./mongodb-init.js:/docker-entrypoint-initdb.d/mongodb-init.js:rw
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mg_express_ecom
+    ports:
+      - 8081:8081
+
+volumes:
+  mongo-data-ecom:

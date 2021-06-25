@@ -15,7 +15,7 @@ export function connect() {
       log.info("Database connected");
     })
     .catch((error) => {
-      log.error("db error", error);
+      log.error("Database error", error);
       process.exit(1);
     });
 }
