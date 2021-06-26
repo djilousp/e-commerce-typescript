@@ -1,6 +1,22 @@
 version: "3.8"
 
 services:
+  api:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.local
+    container_name: ecom_api
+    volumes:
+      - ./config:/app/conf
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_HOST: mongo
+    depends_on:
+      - mongo
+
   mongo:
     image: mongo:4.4.5
     container_name: mongo_ecom
