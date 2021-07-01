@@ -4,7 +4,7 @@ import { UserDocument } from "./user.model";
 export interface SessionDocument extends mongoose.Document {
   user: UserDocument["_id"];
   valid: boolean;
-  ip: string;
+  ip?: string;
   userAgent: string;
   created_at: Date;
   updated_at: Date;
