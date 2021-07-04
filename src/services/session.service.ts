@@ -4,8 +4,12 @@ import { sign } from "../utils/jwt.utils";
 import Session, { SessionDocument } from "../models/session.model";
 import { UserDocument } from "../models/user.model";
 
-export async function createSession(userId: string, userAgent: string) {
-  const session = await Session.create({ user: userId, userAgent });
+export async function createSession(
+  userId: string,
+  userAgent: string,
+  ip: string
+) {
+  const session = await Session.create({ user: userId, userAgent, ip });
   return JSON.parse(JSON.stringify(session));
 }
 

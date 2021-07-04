@@ -11,8 +11,12 @@ export async function createSessionHandler(req: Request, res: Response) {
     res.status(401).send("Invalid username or password");
   }
   // create session
-  // @ts-ignore
-  const session = await createSession(user._id, res.get("user-agent") || "");
+  const session = await createSession(
+    // @ts-ignore
+    user._id,
+    req.get("user-agent") || "",
+    (req.headers["x-forwarded-for"] || req.connection.remoteAddress) as string
+  );
 
   // create access token
   // @ts-ignore
