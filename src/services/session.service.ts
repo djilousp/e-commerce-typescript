@@ -1,4 +1,4 @@
-import { LeanDocument } from "mongoose";
+import { FilterQuery, LeanDocument, UpdateQuery } from "mongoose";
 import config from "config";
 import { get } from "lodash";
 import { findUser } from "./user.service";
@@ -51,4 +51,11 @@ export function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   //@ts-ignore
   const accessToken = createAccessToken({ user, session });
   return accessToken;
+}
+
+export async function updateSession(
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) {
+  return Session.updateOne(query, update);
 }

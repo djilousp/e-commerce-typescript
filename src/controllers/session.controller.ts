@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { createSession, createAccessToken } from "../services/session.service";
+import {
+  createSession,
+  createAccessToken,
+  updateSession,
+} from "../services/session.service";
 import { verifyCredentials } from "../services/user.service";
 import config from "config";
 import { sign } from "../utils/jwt.utils";
@@ -29,4 +33,14 @@ export async function createSessionHandler(req: Request, res: Response) {
   });
 
   return res.send({ accessToken, refreshToken });
+}
+
+export async function invalidateUserSessionHandler(
+  req: Request,
+  res: Response
+) {
+  //@ts-ignore
+  const sessionId = req.user.session;
+  await updateSession({ _id: sessionId }, { valid: false });
+  return res.sendStatus(200);
 }
