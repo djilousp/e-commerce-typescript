@@ -35,16 +35,21 @@ export function createAccessToken({
   );
   return accessToken;
 }
-export function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
+export async function reIssueAccessToken({
+  refreshToken,
+}: {
+  refreshToken: string;
+}) {
   // decode refreshToken
   const { decoded } = decode(refreshToken);
   if (!decoded || !get(decoded, "_id")) return false;
   // Get session
   const session = Session.findById(get(decoded, "_id"));
-
   // Make sure the session is still valid
   //@ts-ignore
-  if (!session || !session?.valid) return false;
+  if (!session || !session?.valid) {
+    return false;
+  }
   //@ts-ignore
   const user = await findUser({ _id: session.user });
   if (!user) return false;
@@ -58,4 +63,7 @@ export async function updateSession(
   update: UpdateQuery<SessionDocument>
 ) {
   return Session.updateOne(query, update);
+}
+export async function findSession(query: FilterQuery<SessionDocument>) {
+  return Session.find(query).lean();
 }

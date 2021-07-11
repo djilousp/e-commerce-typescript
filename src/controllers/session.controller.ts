@@ -3,6 +3,7 @@ import {
   createSession,
   createAccessToken,
   updateSession,
+  findSession,
 } from "../services/session.service";
 import { verifyCredentials } from "../services/user.service";
 import config from "config";
@@ -33,6 +34,12 @@ export async function createSessionHandler(req: Request, res: Response) {
   });
 
   return res.send({ accessToken, refreshToken });
+}
+
+export async function getUserSessionsHandler(req: Request, res: Response) {
+  //@ts-ignore
+  const sessions = await findSession({ user: req.user });
+  return res.status(200).send(sessions);
 }
 
 export async function invalidateUserSessionHandler(
