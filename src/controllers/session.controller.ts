@@ -3,7 +3,7 @@ import {
   createSession,
   createAccessToken,
   updateSession,
-  findSession,
+  findSessions,
 } from "../services/session.service";
 import { verifyCredentials } from "../services/user.service";
 import config from "config";
@@ -38,8 +38,16 @@ export async function createSessionHandler(req: Request, res: Response) {
 
 export async function getUserSessionsHandler(req: Request, res: Response) {
   //@ts-ignore
-  const sessions = await findSession({ user: req.user });
+  const sessions = await findSessions({ user: req.user });
   return res.status(200).send(sessions);
+}
+export async function getUserCurrentSessionHandler(
+  req: Request,
+  res: Response
+) {
+  //@ts-ignore
+  const session = await findSessions({ user: req.user });
+  return res.status(200).send(session[0]);
 }
 
 export async function invalidateUserSessionHandler(

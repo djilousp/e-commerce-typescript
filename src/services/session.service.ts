@@ -64,6 +64,9 @@ export async function updateSession(
 ) {
   return Session.updateOne(query, update);
 }
-export async function findSession(query: FilterQuery<SessionDocument>) {
-  return Session.find(query).lean();
+export async function findSessions(
+  query: FilterQuery<SessionDocument>,
+  limit: number = 200
+) {
+  return Session.find(query).lean().sort({ createdAt: -1 }).limit(limit);
 }
