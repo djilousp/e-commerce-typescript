@@ -8,7 +8,7 @@ export function createShopSchema(
   next: NextFunction
 ) {
   const schema = Joi.object({
-    name: Joi.string().email().required(),
+    name: Joi.string().required(),
     bannerUrl: Joi.string(),
   });
   validateRequest(req, next, schema);
