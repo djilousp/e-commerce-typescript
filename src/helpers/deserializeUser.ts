@@ -2,6 +2,7 @@ import { get } from "lodash";
 import { Request, Response, NextFunction } from "express";
 import { decode } from "../utils/jwt.utils";
 import { reIssueAccessToken } from "../services/session.service";
+import { findShop } from "../services/shop.service";
 
 const deserializeUser = async (
   req: Request,
@@ -19,7 +20,6 @@ const deserializeUser = async (
   if (decoded) {
     //@ts-ignore
     req.user = decoded;
-    return next();
   }
   if (expired && refreshToken) {
     const newAccessToken = await reIssueAccessToken({ refreshToken });
@@ -30,6 +30,13 @@ const deserializeUser = async (
       //@ts-ignore
       req.user = decoded;
     }
+  }
+  //@ts-ignore
+  const shop = await findShop({ user: req.user?._id });
+  if (shop) {
+    //@ts-ignore
+    req.shop = shop;
+    return next();
   }
   return next();
 };
